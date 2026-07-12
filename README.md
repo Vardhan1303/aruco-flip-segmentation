@@ -6,7 +6,7 @@
 [![FLIP Paper](https://img.shields.io/badge/FLIP%20Paper-arXiv-red)](https://arxiv.org/pdf/2502.02763)
 [![FLIP Repo](https://img.shields.io/badge/FLIP-Original%20Repo-black)](https://github.com/CognitiveModeling/FLIP)
 
-<img src="media/photos/comparison_grid.png" width="100%">
+<img src="media/photos/comparison_grid.jpg" width="100%">
 
 ---
 
