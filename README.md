@@ -134,9 +134,16 @@ Live demo: [`media/videos/flip_live.mp4`](media/videos/flip_live.mp4)
 
 All five bottles, including bottle 5, segmented correctly — the pipeline needs only the marker's center as a point prompt, with no bottle-specific training.
 
-| YOLOv8 (public model) — live | ArUco + FLIP — live |
-|---|---|
-| https://github.com/user-attachments/assets/d6e921e2-5c14-410b-962b-632c873fc4af | https://github.com/user-attachments/assets/7b3ee4f8-9f5a-4257-8d6d-95db645da50c |
+<table>
+<tr>
+<td align="center"><b>YOLOv8 (public model) — live</b></td>
+<td align="center"><b>ArUco + FLIP — live</b></td>
+</tr>
+<tr>
+<td><video src="https://github.com/user-attachments/assets/d6e921e2-5c14-410b-962b-632c873fc4af" controls width="100%"></video></td>
+<td><video src="https://github.com/user-attachments/assets/7b3ee4f8-9f5a-4257-8d6d-95db645da50c" controls width="100%"></video></td>
+</tr>
+</table>
 
 ## Acknowledgments & Citation
 
