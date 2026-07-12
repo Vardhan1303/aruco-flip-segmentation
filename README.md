@@ -122,6 +122,8 @@ python segment_image_flip.py --mode live
 
 Live demo: [`media/videos/baseline_live.mp4`](media/videos/baseline_live.mp4)
 
+<video src="media/videos/baseline_live.mp4" width="100%" controls></video>
+
 Bottle 5 was **not detected** by the public model in either the photo or the live video — an out-of-distribution shape relative to COCO's training data.
 
 ### ArUco + FLIP segmentation
