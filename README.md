@@ -28,19 +28,20 @@ A natural extension (outside the scope of this repo) is removing the marker enti
 ├── README.md
 ├── LICENSE
 ├── requirements.txt
-├── baseline_yolo.py                # public-model baseline: YOLOv8 COCO-pretrained bottle detection
-├── segment.py                      # core FLIP + ArUco pipeline (live webcam), also imported by segment_image_flip.py
-├── segment_image_flip.py           # ArUco + FLIP segmentation — single photo or live webcam
+├── baseline_yolo.py                        # public-model baseline: YOLOv8 COCO-pretrained bottle detection
+├── segment.py                              # core FLIP + ArUco pipeline (live webcam), also imported by segment_image_flip.py
+├── segment_image_flip.py                   # ArUco + FLIP segmentation — single photo or live webcam
 ├── media/
 │   ├── photos/
-│   │   ├── source/                 # raw input photos, no marker (bottle_1.jpg ... bottle_5.jpg)
-│   │   ├── source_aruco/           # same bottles, with the ArUco marker stuck on (bottle_1_aruco.jpg ... bottle_5_aruco.jpg)
-│   │   ├── baseline/               # YOLOv8 detection results (bottle_1_yolo.png ... bottle_5_yolo.png)
-│   │   ├── flip/                   # ArUco + FLIP segmentation results (bottle_1_aruco_flip.png ... bottle_5_aruco_flip.png)
-│   │   └── comparison_grid.png     # 4-panel side-by-side comparison figure
+│   │   ├── source/                         # raw input photos, no marker (bottle_1.jpg ... bottle_5.jpg)
+│   │   ├── source_aruco/                   # same bottles, with the ArUco marker stuck on (bottle_1_aruco.jpg ... bottle_5_aruco.jpg)
+│   │   ├── baseline/                       # YOLOv8 detection results (bottle_1_yolo.png ... bottle_5_yolo.png)
+│   │   ├── flip/                           # ArUco + FLIP segmentation results (bottle_1_aruco_flip.png ... bottle_5_aruco_flip.png)
+│   │   ├── comparison_grid_two_bottles     # 4-panel side-by-side comparison figure (2 bottles)
+│   │   └── comparison_grid.jpg             # 2-panel side-by-side comparison figure (All bottles)
 │   └── videos/
-│       ├── baseline_live.mp4       # YOLOv8 live detection demo
-│       └── flip_live.mp4           # ArUco + FLIP live segmentation demo
+│       ├── baseline_live.mp4               # YOLOv8 live detection demo
+│       └── flip_live.mp4                   # ArUco + FLIP live segmentation demo
 ```
 
 `FLIP-main/` (the original FLIP repository, its model weights, and its compiled C extension) is **not** vendored in this repo — see [Setup](#setup) below for how to obtain it.
