@@ -122,7 +122,7 @@ python segment_image_flip.py --mode live
 
 Live demo: [`media/videos/baseline_live.mp4`](media/videos/baseline_live.mp4)
 
-<video src="media/videos/baseline_live.mp4" width="100%" controls></video>
+https://github.com/user-attachments/assets/8a70544c-346b-41bd-8e18-da57f8900c69
 
 Bottle 5 was **not detected** by the public model in either the photo or the live video — an out-of-distribution shape relative to COCO's training data.
 
@@ -133,6 +133,8 @@ Bottle 5 was **not detected** by the public model in either the photo or the liv
 | ![](media/photos/flip/bottle_1_aruco_flip.png) | ![](media/photos/flip/bottle_2_aruco_flip.png) | ![](media/photos/flip/bottle_3_aruco_flip.png) | ![](media/photos/flip/bottle_4_aruco_flip.png) | ![](media/photos/flip/bottle_5_aruco_flip.png) |
 
 Live demo: [`media/videos/flip_live.mp4`](media/videos/flip_live.mp4)
+
+https://github.com/user-attachments/assets/f8dff964-0bfd-4233-9a98-32b96caa9af3
 
 All five bottles, including bottle 5, segmented correctly — the pipeline needs only the marker's center as a point prompt, with no bottle-specific training.
 
