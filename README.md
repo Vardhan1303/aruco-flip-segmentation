@@ -136,9 +136,7 @@ All five bottles, including bottle 5, segmented correctly — the pipeline needs
 
 | YOLOv8 (public model) — live | ArUco + FLIP — live |
 |---|---|
-| https://github.com/user-attachments/assets/898797ca-809d-4e40-a61b-9e21d378c624
-| https://github.com/user-attachments/assets/3ff236e9-3c5f-4b34-a10c-75a746223d07
-|
+| https://github.com/user-attachments/assets/d6e921e2-5c14-410b-962b-632c873fc4af | https://github.com/user-attachments/assets/7b3ee4f8-9f5a-4257-8d6d-95db645da50c |
 
 ## Acknowledgments & Citation
 
