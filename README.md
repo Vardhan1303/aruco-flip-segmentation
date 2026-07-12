@@ -1,6 +1,6 @@
 # ArUco-Guided FLIP Segmentation
 
-**An independent exploration of marker-anchored, point-prompted object segmentation, inspired by the "Grounding Engine" concept from [Iphoreos](https://iphoreos.com)'s pitch.**
+**A marker-anchored, point-prompted object segmentation pipeline: detect an ArUco marker, use its center as a point prompt, segment the object with FLIP — benchmarked against a public COCO-trained detector on novel bottle shapes.**
 
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![FLIP Paper](https://img.shields.io/badge/FLIP%20Paper-arXiv-red)](https://arxiv.org/pdf/2502.02763)
@@ -17,9 +17,9 @@ General-purpose object detectors and segmentation models are trained on large, f
 This repo demonstrates two things side by side:
 
 1. **A public, pretrained detector (YOLOv8, COCO-trained) fails or misfires on out-of-distribution bottle shapes.** It reliably finds standard bottles, but misses or misclassifies unusually shaped ones — a direct symptom of closed-set training.
-2. **An ArUco marker + FLIP point-prompted segmentation pipeline segments any bottle shape reliably, needing only a single point prompt** (the marker's center) rather than category-specific training. This is closer to how the Iphoreos Grounding Engine bootstraps object understanding: a temporary, action-anchored marker gives the system an initial point of reference, which a lightweight object-centric model (FLIP) then turns into a full segmentation — no bottle-specific training required.
+2. **An ArUco marker + FLIP point-prompted segmentation pipeline segments any bottle shape reliably, needing only a single point prompt** (the marker's center) rather than category-specific training. A physical marker gives the system an unambiguous initial point of reference, and a lightweight object-centric model (FLIP) turns that single point into a full segmentation mask — no bottle-specific training required.
 
-The long-term goal (outside the scope of this repo) is to remove the marker entirely once the system can predict its own object center — this pipeline is the Stage-1 building block toward that.
+A natural extension (outside the scope of this repo) is removing the marker entirely once a system can predict its own object center from context — this pipeline is one building block toward that.
 
 ## Repo Structure
 
@@ -33,12 +33,14 @@ The long-term goal (outside the scope of this repo) is to remove the marker enti
 ├── segment_image_flip.py      # ArUco + FLIP segmentation — single photo or live webcam
 ├── media/
 │   ├── photos/
-│   │   ├── baseline/           # 5 YOLOv8 bottle-detection results
-│   │   ├── flip/                # 5 ArUco + FLIP segmentation results
-│   │   └── comparison_grid.png  # 4-panel side-by-side comparison figure
+│   │   ├── source/               # raw input photos, no marker (bottle_1.jpg ... bottle_5.jpg)
+│   │   ├── source_aruco/         # same bottles, with the ArUco marker stuck on (bottle_1_aruco.jpg ... bottle_5_aruco.jpg)
+│   │   ├── baseline/              # YOLOv8 detection results (bottle_1_yolo.png ... bottle_5_yolo.png)
+│   │   ├── flip/                  # ArUco + FLIP segmentation results (bottle_1_aruco_flip.png ... bottle_5_aruco_flip.png)
+│   │   └── comparison_grid.png    # 4-panel side-by-side comparison figure
 │   └── videos/
-│       ├── baseline_live.mp4    # YOLOv8 live detection demo
-│       └── flip_live.mp4        # ArUco + FLIP live segmentation demo
+│       ├── baseline_live.mp4      # YOLOv8 live detection demo
+│       └── flip_live.mp4          # ArUco + FLIP live segmentation demo
 ```
 
 `FLIP-main/` (the original FLIP repository, its model weights, and its compiled C extension) is **not** vendored in this repo — see [Setup](#setup) below for how to obtain it.
@@ -48,8 +50,8 @@ The long-term goal (outside the scope of this repo) is to remove the marker enti
 ### 1. Clone this repo and create the environment
 
 ```bash
-git clone https://github.com/<your-username>/iphoreos-aruco-flip-segmentation.git
-cd iphoreos-aruco-flip-segmentation
+git clone https://github.com/Vardhan1303/aruco-flip-segmentation.git
+cd aruco-flip-segmentation
 
 conda create -n iphoreos python=3.11
 conda activate iphoreos
@@ -88,20 +90,39 @@ cd ../..
 ### Baseline: public model (YOLOv8)
 
 ```bash
-python baseline_yolo.py --mode photo --image media/photos/baseline/bottle_1.jpg
+python baseline_yolo.py --mode photo --image media/photos/source/bottle_1.jpg
 python baseline_yolo.py --mode live
 ```
 
 ### ArUco + FLIP segmentation
 
 ```bash
-python segment_image_flip.py --mode photo --image media/photos/flip/bottle_1.jpg --full-frame --sigma-x 0.1 --sigma-y 0.35
+python segment_image_flip.py --mode photo --image media/photos/source_aruco/bottle_1_aruco.jpg --full-frame --sigma-x 0.1 --sigma-y 0.35
 python segment_image_flip.py --mode live
 ```
 
 (`segment.py` is used directly for the original live-webcam demo and is also imported by `segment_image_flip.py` for the shared FLIP/ArUco logic.)
 
+### Building the comparison grid
+
+```bash
+python compose_grid.py ^
+    --top-left media/photos/baseline/bottle_1_yolo.png ^
+    --top-right media/photos/baseline/bottle_5_yolo.png ^
+    --bottom-left media/photos/flip/bottle_1_aruco_flip.png ^
+    --bottom-right media/photos/flip/bottle_5_aruco_flip.png ^
+    --out media/photos/comparison_grid.png
+```
+
 ## Results
+
+### Source photos
+
+| Without marker | With ArUco marker |
+|---|---|
+| ![](media/photos/source/bottle_1.jpg) | ![](media/photos/source_aruco/bottle_1_aruco.jpg) |
+
+(one pair shown above; all 5 bottles' source photos are in `media/photos/source/` and `media/photos/source_aruco/`)
 
 ### Public model baseline (YOLOv8n, COCO-pretrained)
 
@@ -117,15 +138,11 @@ Bottle 5 was **not detected** by the public model in either the photo or the liv
 
 | Bottle 1 | Bottle 2 | Bottle 3 | Bottle 4 | Bottle 5 |
 |---|---|---|---|---|
-| ![](media/photos/flip/bottle_1_flip.png) | ![](media/photos/flip/bottle_2_flip.png) | ![](media/photos/flip/bottle_3_flip.png) | ![](media/photos/flip/bottle_4_flip.png) | ![](media/photos/flip/bottle_5_flip.png) |
+| ![](media/photos/flip/bottle_1_aruco_flip.png) | ![](media/photos/flip/bottle_2_aruco_flip.png) | ![](media/photos/flip/bottle_3_aruco_flip.png) | ![](media/photos/flip/bottle_4_aruco_flip.png) | ![](media/photos/flip/bottle_5_aruco_flip.png) |
 
 Live demo: [`media/videos/flip_live.mp4`](media/videos/flip_live.mp4)
 
 All five bottles, including bottle 5, segmented correctly — the pipeline needs only the marker's center as a point prompt, with no bottle-specific training.
-
-## Context
-
-This project was built as a personal exploration after encountering [Iphoreos](https://iphoreos.com)'s pitch for a "Grounding Engine" — a bootstrap for embodied and cognitive AI systems to build object-level understanding from minimal supervision, using a temporary, action-anchored marker as an initial reference point. This repo is my own independent attempt to prototype one piece of that idea: ArUco marker as the point prompt, FLIP as the object-centric segmentation front-end. It is not affiliated with, endorsed by, or built on behalf of Iphoreos.
 
 ## Acknowledgments & Citation
 
